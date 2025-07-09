@@ -36,6 +36,50 @@ const menuItems = [
   "pasta",
 ];
 
+// const randoNator = Math.floor(Math.random() * menuItems.length);
+// console.log(randoNator);
+// console.log(menuItems);
+
+function createOrder(name, deliveryStatus) {
+  name = name.charAt(0).toUpperCase() + name.slice(1);
+  const randoNator = Math.floor(Math.random() * menuItems.length);
+  if (deliveryStatus === "on time") {
+    return `Hi ${name}! Your ${menuItems[randoNator]} will arrive in 30 minutes!`;
+  } else if (deliveryStatus === "late") {
+    return `Hi ${name}! Your ${menuItems[randoNator]} will arrive in 45 minutes!`;
+  } else {
+    return `Hi ${name}! Your ${menuItems[randoNator]} will arrive in an unknown time!`;
+  }
+}
+
+console.log(createOrder("luca", "on time")); // "Hi Luca! Your Sushi will arrive in 30 minutes!"
+console.log(createOrder("tina", "late")); // "Hi Tina! Your Burger will arrive in 45 minutes!"
+console.log(createOrder("milo", "unknown")); // "Hi Milo! Your Pasta will arrive in an unknown time!"
+
+// TODO Refactor: Can make the string that are the same into a variable.
+// const message = `Hi ${name}! your ${menuItems[randoNator]} will arrive in}`;
+// const message will be used for the if and else, and then I will use the ternary in the first statement and do something like
+// message += 30 or message += 40, else will just be message += " an unknown" and outside the if else, I will just add another
+// message += " minutes" OR return message += " minutes" this should in theory concatenate correctly and just append whatever
+// passes the the if / else check and return. Returns inside the if / else will be moved to the scope outside it, to make it work.
+// IF THE RETURNS ARE NOT MOVED TO THE SCOPE OUTSIDE, return message = " minutes" will never be added since it will return early.
+console.log("Refactored function: ");
+function createOrderRefactored(name, deliveryStatus) {
+  name = name.charAt(0).toUpperCase() + name.slice(1);
+  const randoNator = Math.floor(Math.random() * menuItems.length);
+  if (deliveryStatus === "on time" || deliveryStatus === "late")
+    return `Hi ${name}! Your ${menuItems[randoNator]} will arrive in ${
+      deliveryStatus === "on time" ? 30 : 40
+    } minutes!`;
+  else {
+    return `Hi ${name}! Your ${menuItems[randoNator]} will arrive in an unknown time!`;
+  }
+}
+
+console.log(createOrderRefactored("luca", "on time"));
+console.log(createOrderRefactored("tina", "late"));
+console.log(createOrderRefactored("luca", "unknown"));
+
 /* TASK 2: Password Strength Checker Assignment
 
 Your task is to write a JavaScript function that checks how strong a user's password is.
@@ -60,3 +104,49 @@ checkPasswordStrength("longpassword?");    // "Medium"
 checkPasswordStrength("%myNewPass!");      // "Strong"
 */
 const usedPasswords = ["password123!", "helloWorld!", "qwerty&"]; // previously used passwords
+
+// Helper function/arrow function, this will be nested inside the else if to check the count of symbols
+// - 1 has to be added, because a string e.g "abc" would still retun 1 since it would count as a string.
+// So the - 1 subtracts the "starting string", and subsequent splits on symbols would give the correct count.
+// If not, it would look like "abc" had a symbol in it, when it in fact does not, since "abc" is still a string. ~nyan♫
+const catGirl = (password, symbol) => password.split(symbol).length - 1;
+function checkPasswordStrength(password) {
+  if (usedPasswords.includes(password)) {
+    return "This password has been used before. Please choose a new one.";
+  } else if (password.length < 6) {
+    // Nested scope inside the else if to determine if even if it's less than 6 characters long,
+    // it will be medium since it contains a special character
+    if (
+      // password.includes("!") ||
+      // password.includes("%") ||
+      // password.includes("&") ||
+      // password.includes("?")
+      catGirl(password, "!") ||
+      catGirl(password, "%") ||
+      catGirl(password, "&") ||
+      catGirl(password, "?")
+    ) {
+      return "Medium";
+    }
+    return "To weak";
+  } else if (password.length > 8) {
+    // Helper function catGirl, it might go ~nyan~♫♫♫
+    const catGirlMagic =
+      catGirl(password, "!") +
+      catGirl(password, "%") +
+      catGirl(password, "&") +
+      catGirl(password, "?");
+    if (catGirlMagic >= 2) {
+      return "Strong";
+    }
+    return "Medium";
+  } else return "Medium";
+}
+console.log("\n");
+console.log(checkPasswordStrength("abc")); // "Too weak"
+console.log(checkPasswordStrength("helloWorld!")); // "This password has been used before. Please choose a new one."
+console.log(checkPasswordStrength("ab&c")); // "Medium"
+console.log(checkPasswordStrength("longpassword?")); // "Medium"
+console.log(checkPasswordStrength("%myNewPass!")); // "Strong"
+// Sanity check
+console.log(catGirl("!myNewPass%", "%"));
