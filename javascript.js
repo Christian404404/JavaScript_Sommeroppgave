@@ -61,8 +61,7 @@ console.log(createOrder("milo", "unknown")); // "Hi Milo! Your Pasta will arrive
 // const message will be used for the if and else, and then I will use the ternary in the first statement and do something like
 // message += 30 or message += 40, else will just be message += " an unknown" and outside the if else, I will just add another
 // message += " minutes" OR return message += " minutes" this should in theory concatenate correctly and just append whatever
-// passes the the if / else check and return. Returns inside the if / else will be moved to the scope outside it, to make it work.
-// IF THE RETURNS ARE NOT MOVED TO THE SCOPE OUTSIDE, return message = " minutes" will never be added since it will return early.
+// passes the the if / else check and return.
 console.log("Refactored function: ");
 function createOrderRefactored(name, deliveryStatus) {
   name = name.charAt(0).toUpperCase() + name.slice(1);
@@ -130,7 +129,7 @@ function checkPasswordStrength(password) {
     }
     return "To weak";
   } else if (password.length > 8) {
-    // Helper function catGirl, it might go ~nyan~♫♫♫
+    // Helper arrow function catGirl, it might go ~nyan~♫♫♫
     const catGirlMagic =
       catGirl(password, "!") +
       catGirl(password, "%") +
