@@ -149,3 +149,28 @@ console.log(checkPasswordStrength("longpassword?")); // "Medium"
 console.log(checkPasswordStrength("%myNewPass!")); // "Strong"
 // Sanity check
 console.log(catGirl("!myNewPass%", "%"));
+
+// After hints were released
+// Using a for loop would shorten this down a lot (But we haven't covered this yet).
+// for(count = 0; count < symbols.length; ++count) etc etc etc
+function weCountCats(password) {
+  let count = 0;
+
+  if (password.includes("!")) {
+    ++count;
+  }
+  if (password.includes("%")) {
+    ++count;
+  }
+  if (password.includes("&")) {
+    ++count;
+  }
+  if (password.includes("?")) {
+    ++count;
+  }
+  return count;
+}
+
+console.log(weCountCats("!?embolater%&"));
+// My first solution still works as intended, implementing this version is possible, but having it sketched out is
+// good enough for me ~nyan~
